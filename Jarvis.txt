@@ -1,0 +1,191 @@
+#                       JARVIS PROJECT BY KARTIS
+#   This is a open source code created by Kartis and if you like to help me,
+# you can through subscribing my YouTube Channel and also by Giving a Like to this Video. 
+# * BEFORE RUNNING THE CODE MAKE SURE YOU HAVE INTERNET CONNECTION *
+#
+# Thank you for Downloading...
+#
+# Social Links:
+# Youtube channel: https://www.youtube.com/channel/UCoss8fVeD9C1OdvUK_cz5mw
+# Instagram account: https://www.instagram.com/kartis_official/
+# Telegram channel link: https://t.me/kartisofficial
+
+# * BEFORE RUNNING THE CODE MAKE SURE YOU HAVE INTERNET CONNECTION *
+
+
+import pyttsx3
+import speech_recognition as sr
+import datetime
+import os
+import wikipedia
+import pywhatkit
+from pyautogui import moveTo,write,leftClick
+import pyjokes
+
+import sys
+from PyQt5 import QtGui
+from PyQt5.QtCore import QTimer,QTime,QDate
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from jarvisSuperUI import Ui_Form
+
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+engine.setProperty('voices',voices[0].id)
+
+def speak(audio):
+    engine.say(audio)
+    engine.runAndWait()
+
+class MainThread(QThread):
+    def __init__(self):
+        super(MainThread,self).__init__()
+    
+    def run(self):
+        self.TaskExection()
+
+    def commands(self):
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            print("Listening...")
+            r.pause_threshold = 1
+            r.adjust_for_ambient_noise(source , duration=1)
+            audio=r.listen(source)
+        try:
+            print("Wait for few moments...")
+            query = r.recognize_google(audio, language='en-in')
+            print(f"You Just Said: {query}\n")
+        except Exception as e:
+            print(e)
+            speak("Please tell me again")
+            query="none"
+        
+        return query
+
+    def wishings(self):
+        hour = int(datetime.datetime.now().hour)
+        if hour >=0 and hour<12:
+            print('Good morning BOSS')
+            speak('Good morning BOSS')
+        elif hour>=12 and hour<17:
+            print("Good Afternoon BOSS")
+            speak("Good Afternoon BOSS")
+        elif hour >=17 and hour<21:
+            print("Good Evening BOSS")
+            speak("Good Evening BOSS")
+        else:
+            print("Good Night BOSS")
+            speak("Good Night BOSS")
+
+
+    def TaskExection(self):
+        self.wishings()
+        while True:
+            self.query = self.commands().lower()
+            if 'time' in self.query:
+                strTime = datetime.datetime.now().strftime("%H:%M:%S")
+                speak("Sir, The time is: " + strTime)
+                print(strTime)
+            elif 'open firefox' in self.query:
+                speak("Opening firefox sir")
+                os.startfile("C:\\Program Files\\Mozilla Firefox\\firefox.exe")
+
+            elif 'wikipedia' in self.query:
+                speak("Searching in wikipedia")
+                try:
+                    self.query=self.query.replace("wikipedia", '')
+                    results = wikipedia.summary(self.query, sentences=1)
+                    speak("According to Wikipedia..")
+                    print(results)
+                    speak(results)
+                except:
+                    print("No results found..")
+                    speak("no results found")
+
+            elif 'play' in self.query:
+                playquery=self.query.replace('play','')
+                speak("Playing " + playquery)
+                pywhatkit.playonyt(playquery)
+
+            elif 'type' in self.query:
+                speak("Please tell me what should i write")
+                while True:
+                    typequery = self.commands()
+                    if typequery == "exit typing":
+                        speak("Done Sir")
+                        break
+                    else:
+                        write(typequery)
+
+            elif 'minimize' in self.query or 'minimise' in self.query:
+                moveTo(1232,15)
+                leftClick()
+
+            elif 'joke' in self.query:
+                jarvisJoke = pyjokes.get_joke()
+                print(jarvisJoke)
+                speak(jarvisJoke)
+
+startExecution = MainThread()
+
+class Main(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+
+        self.ui.startPushButton.clicked.connect(self.startTask)
+        self.ui.quitPushButton.clicked.connect(self.close)
+
+    def startTask(self):
+        # Jarvis GUI
+        self.ui.movie = QtGui.QMovie("C:\\Users\\ELCOT\\Desktop\\JARVIS_BY_KARTIS\\GUI\\Jarvis_Gui (1).gif")
+        self.ui.jarvisGUI.setMovie(self.ui.movie)
+        self.ui.movie.start()
+        # ironManBackground
+        self.ui.movie = QtGui.QMovie("C:\\Users\\ELCOT\\Desktop\\JARVIS_BY_KARTIS\\GUI\\Iron_Template.jpg")
+        self.ui.ironManBackground.setMovie(self.ui.movie)
+        self.ui.movie.start()
+        # ironmanGIF
+        self.ui.movie = QtGui.QMovie("C:\\Users\\ELCOT\\Desktop\\JARVIS_BY_KARTIS\\GUI\\Iron_Template_1.gif")
+        self.ui.ironManGIF.setMovie(self.ui.movie)
+        self.ui.movie.start()
+        # dateLabel
+        self.ui.movie = QtGui.QMovie("C:\\Users\\ELCOT\\Desktop\\JARVIS_BY_KARTIS\\GUI\\gggf.jpg")
+        self.ui.dateLabel.setMovie(self.ui.movie)
+        self.ui.movie.start()
+        # timeLabel
+        self.ui.movie = QtGui.QMovie("C:\\Users\\ELCOT\\Desktop\\JARVIS_BY_KARTIS\\GUI\\gggf.jpg")
+        self.ui.timeLabel.setMovie(self.ui.movie)
+        self.ui.movie.start()
+        # startLabelNotButton
+        self.ui.movie = QtGui.QMovie("C:\\Users\\ELCOT\\Desktop\\JARVIS_BY_KARTIS\\GUI\\Start.png")
+        self.ui.startLabelNotButton.setMovie(self.ui.movie)
+        self.ui.movie.start()
+        # quitLabelNotButton
+        self.ui.movie = QtGui.QMovie("C:\\Users\\ELCOT\\Desktop\\JARVIS_BY_KARTIS\\GUI\\Quit.png")
+        self.ui.quitLabelNotButton.setMovie(self.ui.movie)
+        self.ui.movie.start()
+        # earthGIF
+        self.ui.movie = QtGui.QMovie("C:\\Users\\ELCOT\\Desktop\\JARVIS_BY_KARTIS\\GUI\\Earth.gif")
+        self.ui.earthGIF.setMovie(self.ui.movie)
+        self.ui.movie.start()
+
+        timer = QTimer(self)
+        timer.timeout.connect(self.showTime)
+        timer.start(1000)
+        startExecution.start()
+
+    def showTime(self):
+        currentTime = QTime.currentTime()
+        currentDate = QDate.currentDate()
+        labelTime = currentTime.toString('hh:mm:ss')
+        labelDate = currentDate.toString(Qt.ISODate)
+        self.ui.dateTextBrowser.setText(f"Date: {labelDate}")
+        self.ui.timeTextBrowser.setText(f"Date: {labelTime}")
+
+app = QApplication(sys.argv)
+jarvis = Main()
+jarvis.show()
+exit(app.exec_())
