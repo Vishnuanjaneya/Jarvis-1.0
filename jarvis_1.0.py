@@ -1,4 +1,4 @@
-mport pyttsx3      # pip install pyttsx3
+import pyttsx3      # pip install pyttsx3
 import datetime     
 import speech_recognition as sr     #pip install SpeechRecognition
 import wikipedia        #pip install wikipedia
